@@ -5,7 +5,7 @@ import Lightbox from './Lightbox';
 const GAP = 8;
 const ROW_TARGET = 520;
 const ROW_MAX = 620;     // tallest any row is allowed to be
-const REPEATS = 5;       // how many full cycles in the strip
+const REPEATS = 3;       // how many full cycles in the strip
 const SPEED_PX_S = 40;   // pixels per second — tune this for feel
 
 function shuffle(arr) {
@@ -143,8 +143,8 @@ export default function BentoGrid({ images = [], vis }) {
           display: 'flex',
           flexDirection: 'column',
           gap: GAP,
-          willChange: 'transform',
-          animationPlayState: lightboxSrc ? 'paused' : 'running',
+          willChange: vis ? 'transform' : 'auto',
+          animationPlayState: (!vis || lightboxSrc) ? 'paused' : 'running',
           ...animStyle,
         }}
       >
