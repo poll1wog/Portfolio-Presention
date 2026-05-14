@@ -59,6 +59,7 @@ function MediaItem({ src, type, caption, active, vis, onOpen }) {
         <img
           src={src}
           alt={caption || ''}
+          loading="lazy"
           onError={() => setErrored(true)}
           onClick={active ? onOpen : undefined}
           style={{

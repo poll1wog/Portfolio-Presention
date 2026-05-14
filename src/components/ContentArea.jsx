@@ -114,7 +114,7 @@ export default function ContentArea({ slides, cur, dir, onRestart, onJump, navPr
                 />
               );
             } else if (content === 'bento') {
-              inner = <BentoGrid images={contentProps.images} />;
+              inner = <BentoGrid images={contentProps.images} vis={vis} />;
             } else if (content === 'carousel') {
               inner = (
                 <ImageCarousel

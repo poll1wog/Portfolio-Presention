@@ -53,7 +53,7 @@ function buildRows(items, containerWidth) {
   return rows;
 }
 
-export default function BentoGrid({ images = [] }) {
+export default function BentoGrid({ images = [], vis }) {
   const t = useT();
   const containerRef = useRef(null);
   const stripRef = useRef(null);
@@ -75,9 +75,9 @@ export default function BentoGrid({ images = [] }) {
     return () => ro.disconnect();
   }, []);
 
-  // Preload all images to get natural dimensions
+  // Preload all images to get natural dimensions — only when slide is visible
   useEffect(() => {
-    if (!shuffled.length) return;
+    if (!shuffled.length || !vis) return;
     let cancelled = false;
     const results = new Array(shuffled.length);
     let pending = shuffled.length;
@@ -170,7 +170,7 @@ export default function BentoGrid({ images = [] }) {
                 <img
                   src={cell.src}
                   alt=""
-                  loading="eager"
+                  loading="lazy"
                   decoding="async"
                   style={{
                     width: '100%', height: '100%', objectFit: 'cover', display: 'block',
