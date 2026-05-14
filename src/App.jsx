@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { ThemeCtx, themes } from './theme';
+import { ThemeCtx, themes, font, mono } from './theme';
 import { KF } from './keyframes';
 import { slides } from './data/slides';
 import Sidebar from './components/Sidebar';
@@ -11,10 +11,19 @@ export default function App() {
   const [dir, setDir] = useState(1);
   const [mode, setMode] = useState('dark');
   const [reveal, setReveal] = useState(null);
+  const [winW, setWinW] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const h = () => setWinW(window.innerWidth);
+    window.addEventListener('resize', h);
+    return () => window.removeEventListener('resize', h);
+  }, []);
 
   const total = slides.length;
   const t = themes[mode];
   const isOverview = slides[cur]?.content === 'overview';
+  const isMobile = winW < 768;
+  const sidebarW = winW < 1200 ? 300 : 420;
 
   const go = useCallback((d) => {
     setCur((c) => {
@@ -97,7 +106,7 @@ export default function App() {
 
         {/* Sidebar — collapses to 0 on overview slide */}
         <div style={{
-          width: isOverview ? 0 : 430,
+          width: isOverview ? 0 : sidebarW + 10,
           flexShrink: 0,
           overflow: 'hidden',
           display: 'flex',
@@ -110,6 +119,7 @@ export default function App() {
             cur={cur}
             total={total}
             mode={mode}
+            width={sidebarW}
             onNav={jump}
             onPrev={() => go(-1)}
             onNext={() => go(1)}
@@ -117,7 +127,32 @@ export default function App() {
           />
         </div>
 
-        <ContentArea slides={slides} cur={cur} dir={dir} onRestart={() => jump(0)} onJump={jump} navProps={navProps} />
+        <ContentArea slides={slides} cur={cur} dir={dir} onRestart={() => jump(0)} onJump={jump} navProps={navProps} sidebarW={sidebarW} />
+
+        {/* Mobile overlay */}
+        {isMobile && (
+          <div style={{
+            position: 'absolute', inset: 0,
+            background: t.bg,
+            display: 'flex', flexDirection: 'column',
+            alignItems: 'center', justifyContent: 'center',
+            gap: 16, zIndex: 999, padding: 32, textAlign: 'center',
+          }}>
+            <div style={{
+              width: 44, height: 44, borderRadius: '50%',
+              background: t.surface,
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+            }}>
+              <span style={{ fontFamily: mono, fontSize: 14, fontWeight: 700, color: t.accent }}>PD</span>
+            </div>
+            <p style={{ fontFamily: font, fontSize: 18, fontWeight: 700, color: t.text, lineHeight: 1.4, maxWidth: 280 }}>
+              This experience is best viewed on a larger screen.
+            </p>
+            <p style={{ fontFamily: font, fontSize: 13, color: t.textSecondary }}>
+              Please open this on a desktop or laptop.
+            </p>
+          </div>
+        )}
 
         {reveal && (
           <RadialReveal

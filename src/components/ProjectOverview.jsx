@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useT, font, mono } from '../theme';
 
-export default function ProjectOverview({ projects, vis, onNavigateTo }) {
+export default function ProjectOverview({ projects, vis, onNavigateTo, sidebarW = 420 }) {
   const t = useT();
   const [focusIdx, setFocusIdx] = useState(null);
   const [hovIdx, setHovIdx] = useState(null);

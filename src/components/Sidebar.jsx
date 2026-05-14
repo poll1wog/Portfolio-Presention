@@ -99,26 +99,15 @@ function BioCardContent({ slide, vis }) {
 
   if (sb.type === 'intro') {
     return (
-      <>
-        <div style={enter(0)}>
-          <PhotoSlot src={sb.photo} round />
-        </div>
-        <div style={{ fontFamily: font, fontSize: 17, fontWeight: 700, color: t.textSecondary, lineHeight: 1.6, ...enter(60) }}>
-          {sb.body}
-        </div>
-      </>
+      <div style={{ fontFamily: font, fontSize: 17, fontWeight: 700, color: t.textSecondary, lineHeight: 1.6, ...enter(0) }}>
+        {sb.body}
+      </div>
     );
   }
 
   if (sb.type === 'project') {
     return (
       <>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 6, ...enter(0) }}>
-          <span style={{ fontFamily: mono, fontSize: 11, color: t.accent, letterSpacing: '0.06em', textTransform: 'uppercase' }}>
-            {sb.label}
-          </span>
-          <PhotoSlot src={sb.thumbnail} round={false} />
-        </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
           <div style={enter(60)}>
             <div style={{ fontFamily: font, fontSize: 20, fontWeight: 700, color: t.text, lineHeight: 1.1 }}>
@@ -194,7 +183,7 @@ function ListCardContent({ slide, vis }) {
 }
 
 // ─── Main Sidebar ──────────────────────────────────────────────────────────────
-export default function Sidebar({ slides, cur, total, mode, onNav, onPrev, onNext, onToggle }) {
+export default function Sidebar({ slides, cur, total, mode, width = 420, onNav, onPrev, onNext, onToggle }) {
   const t = useT();
 
   // displayCur lags behind cur — content only swaps when invisible
@@ -278,7 +267,7 @@ export default function Sidebar({ slides, cur, total, mode, onNav, onPrev, onNex
 
   return (
     <div style={{
-      width: 420,
+      width,
       flexShrink: 0,
       display: 'flex',
       flexDirection: 'column',

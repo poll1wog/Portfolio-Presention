@@ -45,7 +45,7 @@ function SlideWrapper({ vis, dir, children }) {
   );
 }
 
-export default function ContentArea({ slides, cur, dir, onRestart, onJump, navProps }) {
+export default function ContentArea({ slides, cur, dir, onRestart, onJump, navProps, sidebarW = 420 }) {
   const t = useT();
   const isOverview = slides[cur]?.content === 'overview';
   const { cur: slideCur, total, labels, onNav, onPrev, onNext, mode, onToggle } = navProps || {};
@@ -107,6 +107,7 @@ export default function ContentArea({ slides, cur, dir, onRestart, onJump, navPr
                 <ProjectOverview
                   projects={contentProps.projects}
                   vis={vis}
+                  sidebarW={sidebarW}
                   onNavigateTo={(id) => {
                     const idx = slides.findIndex((s) => s.id === id);
                     if (idx !== -1) onJump(idx);
